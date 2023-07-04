@@ -19,8 +19,7 @@ def value_of_card(card):
         return LOW_VALUE_ACE
     if is_face(card):
         return FACE_CARD_VALUE
-    else:
-        return int(card)
+    return int(card)
 
 
 def higher_card(card_one, card_two):
@@ -31,8 +30,7 @@ def higher_card(card_one, card_two):
         return card_one
     if card_two_value > card_one_value:
         return card_two
-    else:
-        return card_one, card_two
+    return card_one, card_two
 
 
 def value_of_ace(card_one, card_two):
@@ -40,8 +38,7 @@ def value_of_ace(card_one, card_two):
 
     if would_cause_to_bust or has_ace([card_one, card_two]):
         return LOW_VALUE_ACE
-    else:
-        return HIGH_VALUE_ACE
+    return HIGH_VALUE_ACE
 
 
 def is_blackjack(card_one, card_two):
@@ -69,7 +66,7 @@ def has_face(cards):
 
 
 def is_ace(card):
-    return card is 'A'
+    return card == 'A'
 
 
 def is_face(card):
