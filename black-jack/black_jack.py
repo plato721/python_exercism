@@ -4,78 +4,85 @@ How to play blackjack:    https://bicyclecards.com/how-to-play/blackjack/
 "Standard" playing cards: https://en.wikipedia.org/wiki/Standard_52-card_deck
 """
 
+FACE_CARDS = ['J', 'Q', 'K']
+ACE = 'A'
+MAX_HAND_VALUE = 21
+HIGH_VALUE_ACE = 11
+LOW_VALUE_ACE = 1
+FACE_CARD_VALUE = 10
+DOUBLE_DOWN_HAND_VALUES = [9, 10, 11]
 
+
+# Ace always 1 here
 def value_of_card(card):
-    """Determine the scoring value of a card.
-
-    :param card: str - given card.
-    :return: int - value of a given card.  See below for values.
-
-    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
-    2.  'A' (ace card) = 1
-    3.  '2' - '10' = numerical value.
-    """
-
-    pass
+    if is_ace(card):
+        return LOW_VALUE_ACE
+    if is_face(card):
+        return FACE_CARD_VALUE
+    else:
+        return int(card)
 
 
 def higher_card(card_one, card_two):
-    """Determine which card has a higher value in the hand.
+    card_one_value = value_of_card(card_one)
+    card_two_value = value_of_card(card_two)
 
-    :param card_one, card_two: str - cards dealt in hand.  See below for values.
-    :return: str or tuple - resulting Tuple contains both cards if they are of equal value.
-
-    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
-    2.  'A' (ace card) = 1
-    3.  '2' - '10' = numerical value.
-    """
-
-    pass
+    if card_one_value > card_two_value:
+        return card_one
+    if card_two_value > card_one_value:
+        return card_two
+    else:
+        return card_one, card_two
 
 
 def value_of_ace(card_one, card_two):
-    """Calculate the most advantageous value for the ace card.
+    would_cause_to_bust = is_bust([card_one, card_two, HIGH_VALUE_ACE])
 
-    :param card_one, card_two: str - card dealt. See below for values.
-    :return: int - either 1 or 11 value of the upcoming ace card.
-
-    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
-    2.  'A' (ace card) = 11 (if already in hand)
-    3.  '2' - '10' = numerical value.
-    """
-
-    pass
+    if would_cause_to_bust or has_ace([card_one, card_two]):
+        return LOW_VALUE_ACE
+    else:
+        return HIGH_VALUE_ACE
 
 
 def is_blackjack(card_one, card_two):
-    """Determine if the hand is a 'natural' or 'blackjack'.
-
-    :param card_one, card_two: str - card dealt. See below for values.
-    :return: bool - is the hand is a blackjack (two cards worth 21).
-
-    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
-    2.  'A' (ace card) = 11 (if already in hand)
-    3.  '2' - '10' = numerical value.
-    """
-
-    pass
+    hand = [card_one, card_two]
+    return has_ace(hand) and has_10_value(hand)
 
 
 def can_split_pairs(card_one, card_two):
-    """Determine if a player can split their hand into two hands.
-
-    :param card_one, card_two: str - cards dealt.
-    :return: bool - can the hand be split into two pairs? (i.e. cards are of the same value).
-    """
-
-    pass
+    return value_of_card(card_one) is value_of_card(card_two)
 
 
 def can_double_down(card_one, card_two):
-    """Determine if a blackjack player can place a double down bet.
+    return sum_of([card_one, card_two]) in DOUBLE_DOWN_HAND_VALUES
 
-    :param card_one, card_two: str - first and second cards in hand.
-    :return: bool - can the hand can be doubled down? (i.e. totals 9, 10 or 11 points).
-    """
 
-    pass
+def has_ace(cards):
+    return 'A' in cards
+
+
+def has_face(cards):
+    for card in cards:
+        if is_face(card):
+            return True
+    return False
+
+
+def is_ace(card):
+    return card is 'A'
+
+
+def is_face(card):
+    return card in FACE_CARDS
+
+
+def has_10_value(cards):
+    return '10' in cards or has_face(cards)
+
+
+def is_bust(cards):
+    return sum_of(cards) > MAX_HAND_VALUE
+
+
+def sum_of(cards):
+    return sum(value_of_card(card) for card in cards)
