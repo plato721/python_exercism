@@ -1,14 +1,14 @@
 """Functions to manage and organize queues at Chaitana's roller coaster."""
-EXPRESS_TYPE = 1
 NORMAL_TYPE = 0
+EXPRESS_TYPE = 1
 
 
 def add_me_to_the_queue(express_queue, normal_queue, ticket_type, person_name):
-    queue_for_ticket = express_queue if is_fast_track(ticket_type) else normal_queue
+    queue_for_ticket = express_queue if is_express(ticket_type) else normal_queue
     return add_to_queue(person_name, queue_for_ticket)
 
 
-def is_fast_track(ticket_type):
+def is_express(ticket_type):
     return ticket_type == EXPRESS_TYPE
 
 
