@@ -23,9 +23,11 @@ def card_average(hand):
 
 def approx_average_is_average(hand):
     average = card_average(hand)
+
     middle_card = get_middle_card(hand)
     first_last_average = get_first_last_average(hand)
-    return average == middle_card or average == first_last_average
+
+    return average in (first_last_average, middle_card)
 
 
 def get_first_last_average(hand):
